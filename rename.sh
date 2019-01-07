@@ -116,11 +116,6 @@ pwd
 #### Replacements ###
 ######################################################
 
-# Get all files, not in .git dir.
-find . -type f | grep -v "[.]git" | grep -v "[.]idea" | grep -v "3rdParty" > $HOME/tmp.$$.files.txt
-number_of_none_git_files=`wc -l $HOME/tmp.$$.files.txt`
-echo "Found ${number_of_none_git_files} files, not including .git dir."
-
 move_command="mv"
 is_git_repo=`find . -type d -name "[.]git" | wc -l`
 if [ ${is_git_repo} -gt 0 ]; then
@@ -130,15 +125,17 @@ fi
 
 find_and_replace_string(){
     echo "Swapping string \"${1}\" with \"${2}\" "
+    find . -type f | grep -v "[.]git" | grep -v "[.]idea" | grep -v "3rdParty" > $HOME/tmp.$$.files.txt
     for f in `cat $HOME/tmp.$$.files.txt`
     do
       wc1=`file $f | grep text | wc -l`
       wc2=`file --mime $f | grep "application/xml" | wc -l`
       if [ ${wc1} -gt 0 -o ${wc2} -gt 0 ]; then
-        cat $f | sed s/"${1}"/"${2}"/g > $HOME/tmp.$$.file.txt
+        cat $f | sed s/"$1"/"$2"/g > $HOME/tmp.$$.file.txt
         mv $HOME/tmp.$$.file.txt $f
       fi
     done
+    rm $HOME/tmp.$$.files.txt
     echo "Swapping string \"${1}\" with \"${2}\" - DONE. "
 }
 
@@ -150,6 +147,7 @@ find_and_replace_filename(){
       change_name_command="cat $HOME/tmp.far.$$.files.txt | sed -e \"p;s/${1}/${2}/\" | xargs -n2 ${move_command}"
       eval ${change_name_command}
     fi
+    rm $HOME/tmp.far.$$.files.txt
     echo "Swapping filename part \"$1\" with \"$2\" - DONE. "
 }
 
@@ -210,7 +208,5 @@ echo "Tidying up."
 rm $HOME/tmp.$$.prefixes.txt
 rm $HOME/tmp.$$.prefixes.sorted.txt
 rm $HOME/tmp.$$.prefixes.all.txt
-rm $HOME/tmp.$$.files.txt
-rm $HOME/tmp.far.$$.files.txt
 
 echo "Finished."
