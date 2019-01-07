@@ -17,13 +17,16 @@ Usage
 
 You need to run the following commands inside a bash shell. We normally generate
 our new projects on Linux/Mac. On Windows, try using git-bash.exe, or ask a colleage 
-who is a Linux/Mac developer to do it for you. From the above list, if we wanted to
-create a new project based on the template project `CMakeCatchTemplate`, we would:
+who is a Linux/Mac developer to do it for you. To
+create a new project based on the template project `CMakeCatchTemplate`, do:
 ```
 git clone https://github.com/MattClarkson/CMakeTemplateRenamer.git
 git clone https://github.com/MattClarkson/CMakeCatchTemplate.git
 CMakeTemplateRenamer/rename.sh CMakeCatchTemplate 
 ```
-and answer the questions as they come. You end up with a new project,
-that has the features described in `CMakeCatchTemplate`.
+and similarly for the other template projects. You end up with a new project,
+that has all the features of your chosen template.
+
+If you don't want the git history, then you should export (download) the template repository
+rather than cloning it with git.
 
