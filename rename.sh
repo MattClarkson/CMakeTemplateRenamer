@@ -2,7 +2,7 @@
 
 #/*============================================================================
 #
-#  MYPROJECT: A software package for whatever.
+#  CMakeTemplateRenamer: A script to generate new projects from our templates.
 #
 #  Copyright (c) University College London (UCL). All rights reserved.
 #
