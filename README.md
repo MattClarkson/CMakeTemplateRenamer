@@ -21,17 +21,17 @@ who is a Linux/Mac developer to do it for you. To
 create a new project based on the template project `CMakeCatchTemplate`, do:
 ```
 git clone https://github.com/MattClarkson/CMakeTemplateRenamer.git
-git clone https://github.com/MattClarkson/CMakeCatchTemplate.git
+git clone --recursive https://github.com/MattClarkson/CMakeCatchTemplate.git
 CMakeTemplateRenamer/rename.sh A B C D E F G 
 ```
 Where:
-* A: is the folder you want to clone.
-*  B: is the new folder name you want to create.
-*  C: is new project name in CamelCase.
-*  D: is new project name in lowercase.
-*  E: is new project name all in UPPERCASE.
-*  F: is a short 1 line description, in double quotes.
-*  G: is the new namespace without :: specifiers.
+* A: is the project folder you want to clone.
+* B: is the new folder name you want to create.
+* C: is new project name in CamelCase.
+* D: is new project name in lowercase.
+* E: is new project name all in UPPERCASE.
+* F: is a short 1 line description, in double quotes.
+* G: is the new namespace without :: specifiers.
 
 
 So, as an example:
