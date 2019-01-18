@@ -125,7 +125,7 @@ fi
 
 find_and_replace_string(){
     echo "Swapping string \"${1}\" with \"${2}\" "
-    find . -type f | grep -v "[.]git" | grep -v "[.]idea" | grep -v "3rdParty" > $HOME/tmp.$$.files.txt
+    find . -type f | grep -v "[.]git" | grep -v "[.]idea" | grep -v "3rdParty" | grep -v "multibuild" > $HOME/tmp.$$.files.txt
     for f in `cat $HOME/tmp.$$.files.txt`
     do
       wc1=`file $f | grep text | wc -l`
@@ -180,7 +180,7 @@ find_and_replace_filename "$OLD_PROJECT_NAME_CAPS" "$NEW_PROJECT_NAME_CAPS"
 nc=`echo ${OLD_NAMESPACE} | wc -c | tr -d '[:space:]'`
 for g in .h .cpp .ui .cmake
 do
-  find . -name "${OLD_NAMESPACE}*${g}" | grep -v "[.]git" | grep -v "[.]idea" | grep -v "3rdParty" > $HOME/tmp.$$.${OLD_NAMESPACE}.${g}.txt
+  find . -name "${OLD_NAMESPACE}*${g}" | grep -v "[.]git" | grep -v "[.]idea" | grep -v "3rdParty" | grep -v "multibuild" > $HOME/tmp.$$.${OLD_NAMESPACE}.${g}.txt
   for f in `cat $HOME/tmp.$$.${OLD_NAMESPACE}.${g}.txt`
   do
     basename $f $g | cut -c ${nc}-10000 >> $HOME/tmp.$$.prefixes.txt
