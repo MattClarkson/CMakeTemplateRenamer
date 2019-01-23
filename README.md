@@ -57,3 +57,9 @@ shell script variables, file names etc.
 This script will work similarly for the other named template projects. 
 You end up with a new project, that has all the features of your chosen template.
 
+
+Runtime
+-------
+
+The script is a bit basic. When renaming CMakeCatchTemplate for example,
+it could easily take 20 minutes or so to run.
