@@ -14,25 +14,25 @@
 #
 #============================================================================*/
 
-if [ $# -ne 7 ]; then
+if [ $# -ne 6 ]; then
   echo "Usage: rename.sh A B C D E F G"
   echo "Where:"
   echo "  A: is the folder you want to clone."
-  echo "  B: is the new folder name you want to create."
-  echo "  C: is new project name in CamelCase."
-  echo "  D: is new project name in lowercase."
-  echo "  E: is new project name all in UPPERCASE."
-  echo "  F: is a short 1 line description, in double quotes."
-  echo "  G: is the new namespace without :: specifiers."
+  echo "  B: is the new folder name you want to create, which becomes the new project name in CamelCase"
+  echo "  C: is new project name all in lowercase."
+  echo "  D: is new project name all in UPPERCASE."
+  echo "  E: is a short 1 line description, in double quotes."
+  echo "  F: is the new namespace without :: specifiers."
   echo ""
   echo "So, as an example:"
   echo ""
-  echo "rename.sh CMakeCatchTemplate BananaMaker BananaMaker bananamaker BANANAMAKER \"BananaMaker is a package for making Bananas.\" bm"
+  echo "rename.sh CMakeCatchTemplate BananaMaker bananamaker BANANAMAKER \"BananaMaker is a package for making Bananas.\" bm"
   echo ""
   echo "Will result in cloning CMakeCatchTemplate into BananaMaker and all files or strings being swapped as follows:"
-  echo "  MyProject to BananaMaker"
-  echo "  myproject to bananamaker"
-  echo "  MYPROJECT to BANANAMAKER"
+  echo "  CMakeCatchTemplate to BananaMaker"
+  echo "  MyProject          to BananaMaker"
+  echo "  myproject          to bananamaker"
+  echo "  MYPROJECT          to BANANAMAKER"
   echo "  \"A software package for whatever.\" to \"BananaMaker is a package for making Bananas.\" "
   echo "  mp:: to bm::"
   echo ""
@@ -43,11 +43,11 @@ fi
 
 OLD_PROJECT_DIR=$1
 NEW_PROJECT_DIR=$2
-NEW_PROJECT_NAME_CAMEL_CASE=$3
-NEW_PROJECT_NAME_LOWER_CASE=$4
-NEW_PROJECT_NAME_CAPS=$5
-NEW_SHORT_DESCRIPTION=$6
-NEW_NAMESPACE=$7
+NEW_PROJECT_NAME_CAMEL_CASE=$2
+NEW_PROJECT_NAME_LOWER_CASE=$3
+NEW_PROJECT_NAME_CAPS=$4
+NEW_SHORT_DESCRIPTION=$5
+NEW_NAMESPACE=$6
 
 ######################################################
 # Strings to replace
@@ -80,6 +80,7 @@ fi
 ######################################################
 # Print out stuff before we do it.
 ######################################################
+echo "Swapping \"${OLD_PROJECT_DIR}\" to \"${NEW_PROJECT_DIR}\""
 echo "Swapping \"${OLD_PROJECT_NAME_CAMEL_CASE}\" to \"${NEW_PROJECT_NAME_CAMEL_CASE}\""
 echo "Swapping \"${OLD_PROJECT_NAME_LOWER_CASE}\" to \"${NEW_PROJECT_NAME_LOWER_CASE}\""
 echo "Swapping \"${OLD_PROJECT_NAME_CAPS}\" to \"${NEW_PROJECT_NAME_CAPS}\""
@@ -163,6 +164,7 @@ find_and_replace_string "${OLD_SHORT_DESCRIPTION}" "${NEW_SHORT_DESCRIPTION}"
 find_and_replace_string "${OLD_DOXYGEN_INTRO}" "${NEW_SHORT_DESCRIPTION}"
 
 # Replace name MyProject, myproject, MYPROJECT etc.
+find_and_replace_string "$OLD_PROJECT_DIR" "$NEW_PROJECT_DIR"
 find_and_replace_string "$OLD_PROJECT_NAME_CAMEL_CASE" "$NEW_PROJECT_NAME_CAMEL_CASE"
 find_and_replace_string "$OLD_PROJECT_NAME_LOWER_CASE" "$NEW_PROJECT_NAME_LOWER_CASE"
 find_and_replace_string "$OLD_PROJECT_NAME_CAPS" "$NEW_PROJECT_NAME_CAPS"
