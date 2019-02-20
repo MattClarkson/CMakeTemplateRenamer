@@ -168,6 +168,7 @@ find_and_replace_string "$OLD_PROJECT_DIR" "$NEW_PROJECT_DIR"
 find_and_replace_string "$OLD_PROJECT_NAME_CAMEL_CASE" "$NEW_PROJECT_NAME_CAMEL_CASE"
 find_and_replace_string "$OLD_PROJECT_NAME_LOWER_CASE" "$NEW_PROJECT_NAME_LOWER_CASE"
 find_and_replace_string "$OLD_PROJECT_NAME_CAPS" "$NEW_PROJECT_NAME_CAPS"
+find_and_replace_string "${OLD_PROJECT_DIR}Python" "${NEW_PROJECT_DIR}Python"
 
 # namespace
 find_and_replace_string "namespace $OLD_NAMESPACE" "namespace $NEW_NAMESPACE"
