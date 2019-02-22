@@ -72,7 +72,7 @@ if [ ! -d ${OLD_PROJECT_DIR} ]; then
   exit -2
 fi
 
-if [ "$HOME" = "" ]; then
+if [ "${HOME}" = "" ]; then
   echo "Error: No HOME variable set!"
   exit -3
 fi
@@ -164,19 +164,20 @@ find_and_replace_string "${OLD_SHORT_DESCRIPTION}" "${NEW_SHORT_DESCRIPTION}"
 find_and_replace_string "${OLD_DOXYGEN_INTRO}" "${NEW_SHORT_DESCRIPTION}"
 
 # Replace name MyProject, myproject, MYPROJECT etc.
-find_and_replace_string "$OLD_PROJECT_DIR" "$NEW_PROJECT_DIR"
-find_and_replace_string "$OLD_PROJECT_NAME_CAMEL_CASE" "$NEW_PROJECT_NAME_CAMEL_CASE"
-find_and_replace_string "$OLD_PROJECT_NAME_LOWER_CASE" "$NEW_PROJECT_NAME_LOWER_CASE"
-find_and_replace_string "$OLD_PROJECT_NAME_CAPS" "$NEW_PROJECT_NAME_CAPS"
+find_and_replace_string "${OLD_PROJECT_DIR}" "${NEW_PROJECT_DIR}"
+find_and_replace_string "${OLD_PROJECT_NAME_CAMEL_CASE}" "${NEW_PROJECT_NAME_CAMEL_CASE}"
+find_and_replace_string "${OLD_PROJECT_NAME_LOWER_CASE}" "${NEW_PROJECT_NAME_LOWER_CASE}"
+find_and_replace_string "${OLD_PROJECT_NAME_CAPS}" "${NEW_PROJECT_NAME_CAPS}"
+find_and_replace_string "${OLD_PROJECT_DIR}Python" "${NEW_PROJECT_DIR}Python"
 
 # namespace
-find_and_replace_string "namespace $OLD_NAMESPACE" "namespace $NEW_NAMESPACE"
+find_and_replace_string "namespace ${OLD_NAMESPACE}" "namespace ${NEW_NAMESPACE}"
 find_and_replace_string "${OLD_NAMESPACE}::" "${NEW_NAMESPACE}::"
 
 # Filename replacements
-find_and_replace_filename "$OLD_PROJECT_NAME_CAMEL_CASE" "$NEW_PROJECT_NAME_CAMEL_CASE"
-find_and_replace_filename "$OLD_PROJECT_NAME_LOWER_CASE" "$NEW_PROJECT_NAME_LOWER_CASE"
-find_and_replace_filename "$OLD_PROJECT_NAME_CAPS" "$NEW_PROJECT_NAME_CAPS"
+find_and_replace_filename "${OLD_PROJECT_NAME_CAMEL_CASE}" "${NEW_PROJECT_NAME_CAMEL_CASE}"
+find_and_replace_filename "${OLD_PROJECT_NAME_LOWER_CASE}" "${NEW_PROJECT_NAME_LOWER_CASE}"
+find_and_replace_filename "${OLD_PROJECT_NAME_CAPS}" "${NEW_PROJECT_NAME_CAPS}"
 
 # mp prefixes
 nc=`echo ${OLD_NAMESPACE} | wc -c | tr -d '[:space:]'`

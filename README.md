@@ -23,11 +23,9 @@ create a new project based on the template project `CMakeCatchTemplate`, do:
 ```
 git clone https://github.com/MattClarkson/CMakeTemplateRenamer.git
 git clone --recursive https://github.com/MattClarkson/CMakeCatchTemplate.git
-
-# Optional, if you do not want the git-repo history of CMakeCatchTemplate
-rm -rf CMakeCatchTemplate/.git
-
-# Then this command to generate your new project.
+```
+Then this command to generate your new project.
+```
 CMakeTemplateRenamer/rename.sh A B C D E F
 ```
 Where:
@@ -57,9 +55,22 @@ shell script variables, file names etc.
 This script will work similarly for the other named template projects. 
 You end up with a new project, that has all the features of your chosen template.
 
+Then you will need to re-assign the remote URL for the git repo, to your repo.
+```
+git remote remove origin
+git remote add origin <your_url_here>
+```
+
 
 Runtime
 -------
 
 The script is a bit basic. When renaming CMakeCatchTemplate for example,
 it could easily take 20 minutes or so to run.
+
+
+Optional
+--------
+
+The commands above will result in the new project having the git history
+of your chosen template project. You can chose to remove the history if you wish.
