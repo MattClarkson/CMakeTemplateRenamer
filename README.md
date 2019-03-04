@@ -16,7 +16,7 @@ Usage
 -----
 
 You need to run the following commands inside a bash shell. We normally generate
-our new projects on Linux/Mac. On Windows, try using git-bash.exe, or ask a colleage 
+our new projects on Linux/Mac. On Windows, try using git-bash.exe, or ask a colleague 
 who is a Linux/Mac developer to do it for you. For example, to
 create a new project based on the template project `CMakeCatchTemplate`, do:
 ```
