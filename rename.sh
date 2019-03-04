@@ -215,6 +215,10 @@ if [ "${DROP_GIT_HISTORY}" == "Y" ]; then
   git add .
   GIT_COMMITTER_DATE=`date`
   git commit --amend --no-edit --date "${GIT_COMMITTER_DATE}" -m "Generated from ${REMOTE_ORIGIN}"
+  for t in `git tag`
+  do
+    git tag --delete ${t}
+  done
 else
   git add .
   git commit --no-edit -a -m "Generated from ${REMOTE_ORIGIN}"
