@@ -206,7 +206,7 @@ do
     find_and_replace_filename_and_string "${OLD_NAMESPACE}${i}" "${NEW_NAMESPACE}${i}"
 done
 
-REMOTE_ORIGIN=`git remote -v | cut -f 1 -d " " | cut -c 8-1000`
+REMOTE_ORIGIN=`git remote -v | grep origin | tail -1 | cut -f 1 -d " " | cut -c 8-1000`
 git remote remove origin
 
 if [ "${DROP_GIT_HISTORY}" == "Y" ]; then
@@ -214,14 +214,14 @@ if [ "${DROP_GIT_HISTORY}" == "Y" ]; then
   git reset --soft ${HASH}
   git add .
   GIT_COMMITTER_DATE=`date`
-  git commit --amend --no-edit --date "${GIT_COMMITTER_DATE}" -m "Generated from ${REMOTE_ORIGIN}"
+  git commit --amend --no-edit --date "${GIT_COMMITTER_DATE}" -m "Initial commit" -m "Generated from ${REMOTE_ORIGIN}."
   for t in `git tag`
   do
     git tag --delete ${t}
   done
 else
   git add .
-  git commit --no-edit -a -m "Generated from ${REMOTE_ORIGIN}"
+  git commit --no-edit -a -m "Generated from ${OLD_PROJECT_DIR}." -m "See ${REMOTE_ORIGIN}."
 fi
 
 echo "Tidying up."
