@@ -14,40 +14,33 @@
 #
 #============================================================================*/
 
-if [ $# -ne 6 ]; then
-  echo "Usage: rename.sh A B C D E F G"
+if [ $# -ne 8 -a $# -ne 9 ]; then
+  echo "Usage: rename.sh A B C D E F G H [optional I]"
   echo "Where:"
   echo "  A: is the folder you want to clone."
-  echo "  B: is the new folder name you want to create, which becomes the new project name in CamelCase"
-  echo "  C: is new project name all in lowercase."
-  echo "  D: is new project name all in UPPERCASE."
-  echo "  E: is a short 1 line description, in double quotes."
-  echo "  F: is the new namespace without :: specifiers."
-  echo ""
-  echo "So, as an example:"
-  echo ""
-  echo "rename.sh CMakeCatchTemplate BananaMaker bananamaker BANANAMAKER \"BananaMaker is a package for making Bananas.\" bm"
-  echo ""
-  echo "Will result in cloning CMakeCatchTemplate into BananaMaker and all files or strings being swapped as follows:"
-  echo "  CMakeCatchTemplate to BananaMaker"
-  echo "  MyProject          to BananaMaker"
-  echo "  myproject          to bananamaker"
-  echo "  MYPROJECT          to BANANAMAKER"
-  echo "  \"A software package for whatever.\" to \"BananaMaker is a package for making Bananas.\" "
-  echo "  mp:: to bm::"
-  echo ""
-  echo "The reason for having camel case, lowercase and uppercase is due to different naming conventions for"
-  echo "shell script variables, file names etc."
+  echo "  B: is the new folder name you want to create."
+  echo "  C: is the new project name all in CamelCase."
+  echo "  D: is new project name all in lowercase."
+  echo "  E: is new project name all in UPPERCASE."
+  echo "  F: is a short 1 line description, in double quotes."
+  echo "  G: is the new namespace without :: specifiers."
+  echo "  H: is either Y or N, meaning yes/no to drop the git history."
+  echo "  I: if specified is the new python module name."
   exit
 fi
 
 OLD_PROJECT_DIR=$1
 NEW_PROJECT_DIR=$2
-NEW_PROJECT_NAME_CAMEL_CASE=$2
-NEW_PROJECT_NAME_LOWER_CASE=$3
-NEW_PROJECT_NAME_CAPS=$4
-NEW_SHORT_DESCRIPTION=$5
-NEW_NAMESPACE=$6
+NEW_PROJECT_NAME_CAMEL_CASE=$3
+NEW_PROJECT_NAME_LOWER_CASE=$4
+NEW_PROJECT_NAME_CAPS=$5
+NEW_SHORT_DESCRIPTION=$6
+NEW_NAMESPACE=$7
+DROP_GIT_HISTORY=$8
+PYTHON_MODULE=
+if [ $# -eq 9 ]; then
+  PYTHON_MODULE=$9
+fi
 
 ######################################################
 # Strings to replace
@@ -72,7 +65,7 @@ if [ ! -d ${OLD_PROJECT_DIR} ]; then
   exit -2
 fi
 
-if [ "$HOME" = "" ]; then
+if [ "${HOME}" = "" ]; then
   echo "Error: No HOME variable set!"
   exit -3
 fi
@@ -86,15 +79,19 @@ echo "Swapping \"${OLD_PROJECT_NAME_LOWER_CASE}\" to \"${NEW_PROJECT_NAME_LOWER_
 echo "Swapping \"${OLD_PROJECT_NAME_CAPS}\" to \"${NEW_PROJECT_NAME_CAPS}\""
 echo "Swapping \"${OLD_SHORT_DESCRIPTION}\" to \"${NEW_SHORT_DESCRIPTION}\""
 echo "Swapping \"${OLD_NAMESPACE}::\" to \"${NEW_NAMESPACE}::\""
+echo "Dropping git history:${DROP_GIT_HISTORY}"
+if [ $# -eq 9 ]; then
+  echo "Python module:${PYTHON_MODULE}"
+fi
 
 ######################################################
 # Get user agreement.
 ######################################################
-echo "Is this OK? [Yes|No]"
+echo "Is this OK? [Y|N]"
 read USER_AGREEMENT
 
-if [ "${USER_AGREEMENT}" != "Yes" ]; then
-  echo "You did not type \"Yes\", so this script is exiting."
+if [ "${USER_AGREEMENT}" != "Y" ]; then
+  echo "You did not type exactly \"Y\", so this script is exiting."
   exit 0
 else
   echo "Starting."
@@ -163,20 +160,24 @@ find_and_replace_string "${OLD_SHORT_DESCRIPTION}" "${NEW_SHORT_DESCRIPTION}"
 # Change Doxygen intro
 find_and_replace_string "${OLD_DOXYGEN_INTRO}" "${NEW_SHORT_DESCRIPTION}"
 
+# These are special cases just for CMakeCatchTemplate project
+find_and_replace_string "CMakeCatchTemplatePython" "${PYTHON_MODULE}"
+find_and_replace_string "CMakeCatchTemplate" "${NEW_PROJECT_DIR}"
+
 # Replace name MyProject, myproject, MYPROJECT etc.
-find_and_replace_string "$OLD_PROJECT_DIR" "$NEW_PROJECT_DIR"
-find_and_replace_string "$OLD_PROJECT_NAME_CAMEL_CASE" "$NEW_PROJECT_NAME_CAMEL_CASE"
-find_and_replace_string "$OLD_PROJECT_NAME_LOWER_CASE" "$NEW_PROJECT_NAME_LOWER_CASE"
-find_and_replace_string "$OLD_PROJECT_NAME_CAPS" "$NEW_PROJECT_NAME_CAPS"
+find_and_replace_string "${OLD_PROJECT_DIR}" "${NEW_PROJECT_DIR}"
+find_and_replace_string "${OLD_PROJECT_NAME_CAMEL_CASE}" "${NEW_PROJECT_NAME_CAMEL_CASE}"
+find_and_replace_string "${OLD_PROJECT_NAME_LOWER_CASE}" "${NEW_PROJECT_NAME_LOWER_CASE}"
+find_and_replace_string "${OLD_PROJECT_NAME_CAPS}" "${NEW_PROJECT_NAME_CAPS}"
 
 # namespace
-find_and_replace_string "namespace $OLD_NAMESPACE" "namespace $NEW_NAMESPACE"
+find_and_replace_string "namespace ${OLD_NAMESPACE}" "namespace ${NEW_NAMESPACE}"
 find_and_replace_string "${OLD_NAMESPACE}::" "${NEW_NAMESPACE}::"
 
 # Filename replacements
-find_and_replace_filename "$OLD_PROJECT_NAME_CAMEL_CASE" "$NEW_PROJECT_NAME_CAMEL_CASE"
-find_and_replace_filename "$OLD_PROJECT_NAME_LOWER_CASE" "$NEW_PROJECT_NAME_LOWER_CASE"
-find_and_replace_filename "$OLD_PROJECT_NAME_CAPS" "$NEW_PROJECT_NAME_CAPS"
+find_and_replace_filename "${OLD_PROJECT_NAME_CAMEL_CASE}" "${NEW_PROJECT_NAME_CAMEL_CASE}"
+find_and_replace_filename "${OLD_PROJECT_NAME_LOWER_CASE}" "${NEW_PROJECT_NAME_LOWER_CASE}"
+find_and_replace_filename "${OLD_PROJECT_NAME_CAPS}" "${NEW_PROJECT_NAME_CAPS}"
 
 # mp prefixes
 nc=`echo ${OLD_NAMESPACE} | wc -c | tr -d '[:space:]'`
@@ -204,6 +205,24 @@ for i in "${file_names[@]}"
 do
     find_and_replace_filename_and_string "${OLD_NAMESPACE}${i}" "${NEW_NAMESPACE}${i}"
 done
+
+REMOTE_ORIGIN=`git remote -v | grep origin | tail -1 | cut -f 1 -d " " | cut -c 8-1000`
+git remote remove origin
+
+if [ "${DROP_GIT_HISTORY}" == "Y" ]; then
+  HASH=`git log --oneline | tail -1 | cut -f 1 -d " "`
+  git reset --soft ${HASH}
+  git add .
+  GIT_COMMITTER_DATE=`date`
+  git commit --amend --no-edit --date "${GIT_COMMITTER_DATE}" -m "Initial commit" -m "Generated from ${REMOTE_ORIGIN}."
+  for t in `git tag`
+  do
+    git tag --delete ${t}
+  done
+else
+  git add .
+  git commit --no-edit -a -m "Generated from ${OLD_PROJECT_DIR}." -m "See ${REMOTE_ORIGIN}."
+fi
 
 echo "Tidying up."
 
