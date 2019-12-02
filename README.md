@@ -25,22 +25,24 @@ git clone --recursive https://github.com/MattClarkson/CMakeCatchTemplate.git
 ```
 Then this command to generate your new project.
 ```
-CMakeTemplateRenamer/rename.sh A B C D E F G H [optional I]
+CMakeTemplateRenamer/rename.sh A B C D E F [optional G]
 ```
 Where:
  * A: is the folder you want to clone.
  * B: is the new folder name you want to create.
  * C: is the new project name all in CamelCase.
- * D: is new project name all in lowercase.
- * E: is new project name all in UPPERCASE.
- * F: is a short 1 line description, in double quotes.
- * G: is the new namespace without :: specifiers.
- * H: is either Y or N, meaning yes/no to drop the git history.
- * I: if specified is the new python module name.
-  
+ * D: is a short 1 line description, in double quotes.
+ * E: is the new namespace without :: specifiers.
+ * F: is either Y or N, meaning yes/no to drop the git history.
+ * G: if specified is the new python module name.
+
+Lowercase and Uppercase project names are derived from the CamelCase (argument C) and used where appropriate.
+The reason for having CamelCase, lowercase and UPPERCASE is due to different naming conventions for
+shell script variables, file names etc.
+
 So, as a more illustrative example:
 ```
-CMakeTemplateRenamer/rename.sh CMakeCatchTemplate BananaMaker BananaMaker bananamaker BANANAMAKER "BananaMaker is a package for making Bananas." bm N bananamakerpython
+CMakeTemplateRenamer/rename.sh CMakeCatchTemplate BananaMaker BananaMaker "BananaMaker is a package for making Bananas." bm N bananamakerpython
 ```
 Will result in cloning CMakeCatchTemplate into BananaMaker and all files or strings being swapped as follows:
 * CMakeCatchTemplate to BananaMaker
@@ -52,8 +54,6 @@ Will result in cloning CMakeCatchTemplate into BananaMaker and all files or stri
 * and the git history will be dropped
 * and if specified the new python module will be called bananamakerpython
 
-The reason for having CamelCase, lowercase and UPPERCASE is due to different naming conventions for
-shell script variables, file names etc.
 
 This script will work similarly for the other named template projects. 
 You end up with a new project, that has all the features of your chosen template.
