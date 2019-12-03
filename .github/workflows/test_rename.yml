@@ -1,0 +1,19 @@
+name: Rename a project
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Rename repository
+        run: |
+          cd ..
+          # Clone repo we want to rename
+          git clone --recursive https://github.com/MattClarkson/CMakeCatchTemplate.git
+          # Need to answer Y when prompted to confirm we want to proceed
+          yes Y | CMakeTemplateRenamer/rename.sh CMakeCatchTemplate WorkflowProject WorkflowProject "Tom's project" wfp Y pywfp
+          # Confirm success (does new directory exist?
+          [ -d "./WorkflowProject" ] && echo "WorkflowProject directory created successfully"
