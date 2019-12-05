@@ -15,7 +15,7 @@
 #============================================================================*/
 
 if [ $# -ne 6 -a $# -ne 7 ]; then
-  echo "Usage: rename.sh A B C D E F G H [optional I]"
+  echo "Usage: rename.sh A B C D E F [optional G]"
   echo "Where:"
   echo "  A: is the folder you want to clone."
   echo "  B: is the new folder name you want to create."
