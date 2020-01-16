@@ -14,32 +14,30 @@
 #
 #============================================================================*/
 
-if [ $# -ne 8 -a $# -ne 9 ]; then
-  echo "Usage: rename.sh A B C D E F G H [optional I]"
+if [ $# -ne 6 -a $# -ne 7 ]; then
+  echo "Usage: rename.sh A B C D E F [optional G]"
   echo "Where:"
   echo "  A: is the folder you want to clone."
   echo "  B: is the new folder name you want to create."
   echo "  C: is the new project name all in CamelCase."
-  echo "  D: is new project name all in lowercase."
-  echo "  E: is new project name all in UPPERCASE."
-  echo "  F: is a short 1 line description, in double quotes."
-  echo "  G: is the new namespace without :: specifiers."
-  echo "  H: is either Y or N, meaning yes/no to drop the git history."
-  echo "  I: if specified is the new python module name."
+  echo "  D: is a short 1 line description, in double quotes."
+  echo "  E: is the new namespace without :: specifiers."
+  echo "  F: is either Y or N, meaning yes/no to drop the git history."
+  echo "  G: if specified is the new python module name."
   exit
 fi
 
 OLD_PROJECT_DIR=$1
 NEW_PROJECT_DIR=$2
 NEW_PROJECT_NAME_CAMEL_CASE=$3
-NEW_PROJECT_NAME_LOWER_CASE=$4
-NEW_PROJECT_NAME_CAPS=$5
-NEW_SHORT_DESCRIPTION=$6
-NEW_NAMESPACE=$7
-DROP_GIT_HISTORY=$8
+NEW_PROJECT_NAME_LOWER_CASE=${3,,}
+NEW_PROJECT_NAME_CAPS=${3^^}
+NEW_SHORT_DESCRIPTION=$4
+NEW_NAMESPACE=$5
+DROP_GIT_HISTORY=$6
 PYTHON_MODULE=
-if [ $# -eq 9 ]; then
-  PYTHON_MODULE=$9
+if [ $# -eq 7 ]; then
+  PYTHON_MODULE=$7
 fi
 
 ######################################################
